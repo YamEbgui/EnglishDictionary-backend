@@ -23,7 +23,7 @@ AWS.config.update({
 });
 
 let docClient = new AWS.DynamoDB.DocumentClient();
-let counter = 6000;
+let counter = 0;
 
 let save = function () {
   for (let i = 0; i < 3000; i++) {
