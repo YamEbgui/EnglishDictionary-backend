@@ -1,40 +1,8 @@
 const DynamoDB = require("./config");
-const partsOfSpeech = [
-  ["n", "noun"],
-  ["prep", "preposition"],
-  ["a", "adverb"],
-  ["v", "verb"],
-  ["adv", "adjective"],
-  ["p", "proverb"],
-  ["interj", "interjection"],
-  ["conj", "conjunction"],
-  ["pron", "pronoun"],
-];
-
-//CHECK IF POS EXIST IN THE ARRAY OF POS
-function checkIfExist(pos) {
-  let isExist = false;
-  partsOfSpeech.map((fullVersionPos) => {
-    if (fullVersionPos[0] === pos || fullVersionPos[1] === pos) {
-      isExist = true;
-    }
-  });
-  return isExist;
-}
-
-//RETURN SHORT VERSION OF THE POS FROM THE POS ARRAY
-function returnShortVersion(pos) {
-  let shortVersion;
-  partsOfSpeech.map((fullVersionPos) => {
-    if (fullVersionPos[0] === pos || fullVersionPos[1] === pos) {
-      shortVersion = fullVersionPos[0];
-    }
-  });
-  return shortVersion;
-}
+const { returnShortVersion, checkIfExist } = require("./index");
 
 //HANDLE RESPONSE FROM DYNAMODB TO RETURN HTTP RESPONSE
-function httpResponse(req, res, response) {
+function handleResponse(req, res, response) {
   console.log(response.Count);
   switch (response.Count) {
     case 1:
@@ -60,7 +28,7 @@ async function getWord(req, res) {
       },
     };
     const response = await DynamoDB.query(params).promise();
-    httpResponse(req, res, response);
+    handleResponse(req, res, response);
   } catch (err) {
     console.log("error");
     res.status(400).json(err);
