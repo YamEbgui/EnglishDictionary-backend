@@ -3,7 +3,6 @@ const { returnShortVersion, checkIfExist } = require("./index");
 
 //HANDLE RESPONSE FROM DYNAMODB TO RETURN HTTP RESPONSE
 function handleResponse(req, res, response) {
-  console.log(response.Count);
   switch (response.Count) {
     case 1:
       res.json(response.Items[0]);
@@ -49,7 +48,7 @@ async function getWordWithPos(req, res) {
       },
     };
     const response = await DynamoDB.query(params).promise();
-    httpResponse(req, res, response);
+    handleResponse(req, res, response);
   } catch (err) {
     res.status(400).json(err);
   }
